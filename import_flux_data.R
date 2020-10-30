@@ -18,7 +18,8 @@ packages <- c("readxl",
               "tidyverse",
               "lubridate",
               "stringr",
-              "metafor")
+              "metafor",
+              "writexl")
 
 # loads all need libraries
 for (package in packages){
@@ -115,5 +116,13 @@ for (file in files){
   assign(substr(file, 1, 10), import_flux(file))
 }
 
+#### write to excel sheet ----
 
-# just a test
+exportpath <- paste(getwd(),
+                    "/",
+                    deparse(substitute(SWE_3_2017)),
+                    ".xlsx",
+                    sep="")
+write_xlsx(SWE_3_2017,
+           exportpath)
+
