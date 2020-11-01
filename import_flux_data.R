@@ -39,13 +39,13 @@ import_flux <- function(file){
   ## flux_data, skip header, combine columnnames with data
   
   columns <- read_excel(file,
-                        sheet = "FLUX_DATA",
+                        sheet = "3_FLUX_DATA",
                         na = "NA",
                         skip = 1,
                         n_max = 1)
   
   flux_data <- read_excel(file,
-                          sheet = "FLUX_DATA",
+                          sheet = "3_FLUX_DATA",
                           skip = 6)
   
   # assign column names
@@ -66,7 +66,7 @@ import_flux <- function(file){
   ## plot_data, skip header, combine columnnames with data
   
   columns_2 <- read_excel(file, 
-                          sheet = "PLOT_METADATA",
+                          sheet = "4_PLOT_METADATA",
                           skip = 2,
                           n_max = 1)
   
@@ -76,7 +76,7 @@ import_flux <- function(file){
   colnames(columns_2) <- gsub("_2","_mineral",colnames(columns_2))
   
   plot_data <- read_excel(file, 
-                          sheet = "PLOT_METADATA", skip = 6)
+                          sheet = "4_PLOT_METADATA", skip = 6)
   
   # assign column names
   colnames(plot_data) <- colnames(columns_2)
@@ -87,7 +87,7 @@ import_flux <- function(file){
   plot_data <- plot_data %>% drop_na(Treatment)
   
   
-  return(assign(substr(file, 1, 10), merge(x = flux_data, y = plot_data, by = "plottreatment", all = TRUE)))
+  return(assign(str_sub(file,-10,-5), merge(x = flux_data, y = plot_data, by = "plottreatment", all = TRUE)))
 }
 
 
@@ -113,7 +113,7 @@ for (file in files){
   # check if excelsheet 
   stopifnot(str_sub(file,-5,-1)== ".xlsx")
   
-  assign(substr(file, 1, 10), import_flux(file))
+  assign(str_sub(file, -15, -6), import_flux(file))
 }
 
 #### write to excel sheet ----
