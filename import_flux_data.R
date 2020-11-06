@@ -86,8 +86,15 @@ import_flux <- function(file){
   plot_data$plottreatment <- paste(plot_data$Plot_ID,plot_data$Treatment)
   plot_data <- plot_data %>% drop_na(Treatment)
   
+  all_data <-  merge(x = flux_data,
+                     y = plot_data,
+                     by = "plottreatment",
+                     all = TRUE)
   
-  return(assign(str_sub(file,-10,-5), merge(x = flux_data, y = plot_data, by = "plottreatment", all = TRUE)))
+  all_data <- all_data %>%
+    select_if(~!all(is.na(.))) 
+                       
+  return(assign(str_sub(file,-10,-5), all_data))
 }
 
 
@@ -126,3 +133,4 @@ exportpath <- paste(getwd(),
 write_xlsx(SWE_3_2017,
            exportpath)
 
+# trst
