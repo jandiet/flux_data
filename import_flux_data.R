@@ -146,4 +146,4 @@ import_all <- function(sourcefolder){
 # write_xlsx(SWE_3_2017,
 #           exportpath)
 
-# trst
+# just a test
