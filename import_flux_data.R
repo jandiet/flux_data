@@ -19,7 +19,8 @@ packages <- c("readxl",
               "lubridate",
               "stringr",
               "metafor",
-              "writexl")
+              "writexl",
+              "ggplot2")
 
 # loads all need libraries
 for (package in packages){
@@ -113,24 +114,36 @@ import_flux <- function(file){
 # enter folderpath
 folder = getwd()   # works because working directory is set to folder
 
-files <- dir(folder, pattern = ".xlsx")
 
-for (file in files){
+
+# function to import all files from folder 
+# saved as list
+
+import_all <- function(sourcefolder){
   
-  # check if excelsheet 
-  stopifnot(str_sub(file,-5,-1)== ".xlsx")
+  files <- dir(sourcefolder, pattern = ".xlsx")
   
-  assign(str_sub(file, -15, -6), import_flux(file))
+  fluxlist <- vector("list",length(files))
+  
+  for (i in seq(1,length(files))){
+    
+    
+    # check if excelsheet 
+    #stopifnot(str_sub(files[i],-5,-1)== ".xlsx")
+    
+    fluxlist[[i]] <- import_flux(files[i])
+  }
+  
+  return(fluxlist)
 }
-
 #### write to excel sheet ----
 
-exportpath <- paste(getwd(),
-                    "/",
-                    deparse(substitute(SWE_3_2017)),
-                    ".xlsx",
-                    sep="")
-write_xlsx(SWE_3_2017,
-           exportpath)
+# exportpath <- paste(getwd(),
+#                   "/",
+#                    deparse(substitute(SWE_3_2017)),
+#                    ".xlsx",
+#                    sep="")
+# write_xlsx(SWE_3_2017,
+#           exportpath)
 
 # trst
